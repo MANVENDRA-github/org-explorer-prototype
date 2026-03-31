@@ -1,50 +1,268 @@
 # Org Explorer
 
-Local-first organizational intelligence for GitHub orgs: multi-org merge, IndexedDB cache, Sigma.js graph, insight engine, time-series charts, tables, and CSV/PDF export.
+### Local-First Organizational Intelligence for GitHub Ecosystems
 
-## Prerequisites
+---
 
-- **Node.js** 18+ (20+ recommended for tooling compatibility)
-- **npm** 9+
+## Overview
 
-## 1. Install dependencies
+Org Explorer is a frontend-only, local-first web application that transforms GitHub organizational data into actionable insights.
 
-From the project directory (path may include a space):
+Instead of functioning as a traditional dashboard, Org Explorer introduces an intelligence layer over GitHub data that helps understand how organizations operate at scale.
 
-```bash
-cd "/Users/manvendrasingh/Desktop/Org Explorer"
-npm install
+It enables users to:
+
+* Analyze multiple GitHub organizations as a single system
+* Explore contributor–repository relationships
+* Identify risks, trends, and inefficiencies
+* Generate meaningful insights without relying on cloud infrastructure
+
+---
+
+## Objectives
+
+* Move beyond raw metrics to insight generation
+* Support multi-organization aggregation
+* Operate fully in-browser without backend dependencies
+* Ensure privacy-first and offline-first design
+* Handle large-scale open-source ecosystems efficiently
+
+---
+
+## Core Features
+
+### Multi-Organization Aggregation
+
+* Accept multiple GitHub organizations as input
+* Merge them into a unified dataset
+* Deduplicate contributors across organizations
+
+---
+
+### Interactive Contribution Graph
+
+Visualizes relationships between repositories and contributors.
+
+#### Graph Encoding
+
+| Element        | Meaning                                 |
+| -------------- | --------------------------------------- |
+| Node Size      | Activity or importance                  |
+| Node Color     | Entity type (repository or contributor) |
+| Edge Thickness | Contribution volume                     |
+| Node Position  | Activity-based clustering               |
+
+#### Interactions
+
+* Hover to view summary details
+* Click to open detailed insights panel
+* Filter by activity, time range, and repository size
+
+---
+
+### Insight Engine
+
+Generates analytical insights such as:
+
+* Repositories with low recent activity
+* Contributor concentration (bus factor risk)
+* Declining activity trends
+* Issue backlog imbalance
+
+Each insight includes:
+
+* explanation
+* reasoning
+* linked entities
+
+---
+
+### Time-Series Analytics
+
+Tracks activity trends over time:
+
+* Pull requests opened, merged, closed
+* Issues opened and closed
+* Contributor activity
+
+Supports weekly and monthly aggregation.
+
+---
+
+### Data Tables
+
+Provides structured views for repositories and contributors:
+
+* Sorting, filtering, and search
+* Efficient handling of large datasets
+
+---
+
+### Export System
+
+Supports exporting data and insights as:
+
+* CSV
+* PDF reports with summaries and analytics
+
+---
+
+## System Architecture
+
+Org Explorer follows a layered and modular architecture:
+
+```
+GitHub API Layer
+        ↓
+Caching Layer (IndexedDB + localStorage)
+        ↓
+Data Normalization Layer
+        ↓
+Analytics & Insight Engine
+        ↓
+Presentation Layer (UI)
 ```
 
-## 2. Start the dev server
+### Key Principles
 
-```bash
-npm run dev
+* IndexedDB serves as the single source of truth
+* Analytical logic is separated from UI
+* UI consumes processed data, not raw API responses
+* No backend dependency
+
+---
+
+## Data Flow
+
+1. Fetch data from GitHub APIs
+2. Cache data locally
+3. Normalize and merge entities
+4. Compute analytics and aggregates
+5. Generate insights
+6. Render UI
+
+---
+
+## Project Structure
+
+```
+src/
+  app/                  # routes / pages
+  components/           # UI components
+  services/             # API and sync orchestration
+  lib/
+    github/             # API clients
+    idb/                # IndexedDB layer
+    analytics/          # computation logic
+    merge/              # multi-organization merging
+    export/             # CSV and PDF generation
+  hooks/                # custom hooks
+  state/                # state management
+  types/                # TypeScript interfaces
+  styles/               # theme and global styles
 ```
 
-Vite prints a local URL (typically `http://localhost:5173`). Open it in Chromium, Firefox, or Safari.
+---
 
-## 3. Use the app
+## Core Modules
 
-1. **Organizations & sync** — Add one or more GitHub organization slugs (e.g. `vercel`, `remix-run`). Toggle inclusion with the checkbox. Optionally paste a [GitHub personal access token](https://github.com/settings/tokens) (repo read scope) into the token field; it is stored in **session storage** only for higher API limits.
-2. Click **Sync now**. Progress appears while repositories are listed and the top repos (by stars) are analyzed in depth (contributors, recent PRs/issues). Results are written to **IndexedDB**.
-3. **Graph** — Explore repo–contributor relationships; use filters and click nodes for the side drawer.
-4. **Analytics** — Insight cards and ECharts time series (weekly/monthly, configurable window).
-5. **Tables** — Sortable, searchable, paginated repositories and contributors.
-6. **Export** — From the home page, open **Export** for CSV bundles and a PDF summary (add chart screenshots from Analytics for a full deck).
+### Services Layer
 
-**Clear cached data** removes repositories, contributors, edges, and sync metadata but **keeps your org list** in IndexedDB.
+Handles GitHub API requests, rate limiting, and incremental synchronization.
 
-## Production build
+### Caching Layer
 
-```bash
-npm run build
-npm run preview
-```
+* IndexedDB for structured data storage
+* localStorage for metadata and preferences
 
-`preview` serves the `dist/` folder locally for smoke testing.
+### Analytics Engine
 
-## Notes
+Responsible for:
 
-- Unauthenticated requests are limited to **60/hour** per GitHub IP; a PAT raises this substantially.
-- Full detail sync is capped (see `src/config/constants.ts`, `MAX_REPOS_FULL_DETAIL`) so large orgs stay usable; remaining repos are stored with metadata only.
+* aggregations
+* trend analysis
+* insight generation
+
+### Graph Engine
+
+Builds:
+
+* nodes representing repositories and contributors
+* edges representing relationships
+* layout hints for visualization
+
+### UI Layer
+
+Includes:
+
+* graph visualization
+* analytics dashboards
+* tables and export interfaces
+
+---
+
+## Data Model (Overview)
+
+Core entities include:
+
+* Repository
+* Contributor
+* Contribution Edge
+* Time-Series Data
+* Insight
+
+---
+
+## Tech Stack
+
+| Technology            | Purpose                        |
+| --------------------- | ------------------------------ |
+| React + TypeScript    | UI development and type safety |
+| Vite                  | Build tool                     |
+| Sigma.js              | Graph visualization            |
+| ECharts               | Analytics visualization        |
+| TanStack Table        | Data tables                    |
+| IndexedDB (Dexie/idb) | Local storage                  |
+| Zustand               | State management               |
+
+---
+
+## Performance Considerations
+
+* IndexedDB caching to reduce API usage
+* Incremental data fetching
+* Virtualized tables for large datasets
+* Graph node limiting for scalability
+* Optional Web Workers for heavy computations
+
+---
+
+## Error Handling
+
+The system handles:
+
+* GitHub API rate limits
+* Network failures
+* Invalid organization inputs
+* Partial datasets
+
+Graceful degradation includes:
+
+* fallback to cached data
+* sync status indicators
+* user feedback for incomplete data
+
+---
+
+## Future Enhancements
+
+* Plugin-based insight system
+* Multi-platform support (e.g., GitLab)
+* Organizational health scoring
+* Advanced graph clustering
+
+---
+
+## Current Status
+
+* Using mock data for demo purposes
