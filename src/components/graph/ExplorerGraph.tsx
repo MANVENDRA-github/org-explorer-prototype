@@ -151,7 +151,7 @@ export function ExplorerGraph(props: Props) {
           maxWidth: 280,
         }}
       >
-        Repos = blue · People = mint · Edge weight ≈ contribution (sampled)
+        Repos = blue · People = mint · Edge weight ≈ contribution
       </div>
     </div>
   )
