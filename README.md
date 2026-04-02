@@ -266,3 +266,5 @@ Graceful degradation includes:
 ## Current Status
 
 * Using mock data for demo purposes
+
+---
