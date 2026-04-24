@@ -57,7 +57,7 @@ export function DataPage() {
     ],
     [],
   )
-
+//cols
   const contributorColumns = useMemo(
     () => [
       contribHelper.accessor('login', { header: 'Login' }),
