@@ -1,6 +1,6 @@
 # Org Explorer
 
-### Local-First Organizational Intelligence for GitHub Ecosystems
+### Local-First Organizational Intelligence for AOSSIE GitHub Ecosystems
 
 ---
 
